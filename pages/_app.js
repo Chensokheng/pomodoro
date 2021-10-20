@@ -1,7 +1,13 @@
-import 'tailwindcss/tailwind.css'
+import "tailwindcss/tailwind.css";
+import GlobalState from "../state/GlobalState";
+import "../styles/font.css";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+	return (
+		<GlobalState>
+			<Component {...pageProps} />
+		</GlobalState>
+	);
 }
 
-export default MyApp
+export default MyApp;
