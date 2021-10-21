@@ -10,18 +10,19 @@ export default function Timer({
 	seconds,
 	isTimeUp,
 	muteAlarm,
+	reset,
 }) {
 	const options = ["Pomodoro", "Short Break", "Long Break"];
 
 	return (
-		<div className="flex justify-center items-center flex-col w-11/12 sm:w-10/12 mx-auto bg-blue-200 bg-opacity-20 pt-5 pb-5 rounded">
+		<div className="flex justify-center items-center flex-col w-11/12 sm:w-10/12 mx-auto pt-5 pb-5 rounded">
 			<div className="flex gap-5 text-white items-center">
 				{options.map((option, index) => {
 					return (
 						<h1
 							key={index}
 							className={`${
-								index === stage ? "bg-black bg-opacity-30" : ""
+								index === stage ? "bg-gray-500 bg-opacity-30" : ""
 							} p-1 rounded cursor-pointer transition-all`}
 							onClick={() => switchStage(index)}
 						>
@@ -50,6 +51,11 @@ export default function Timer({
 					/>
 				)}
 			</div>
+			{ticking && (
+				<button className="uppercase text-white underline mt-5" onClick={reset}>
+					Reset
+				</button>
+			)}
 		</div>
 	);
 }

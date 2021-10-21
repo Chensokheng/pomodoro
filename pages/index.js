@@ -3,9 +3,10 @@ import ModalSetting from "../components/ModalSetting";
 import Alarm from "../components/Alarm";
 import Navigation from "../components/Navigation";
 import Timer from "../components/Timer";
+import About from "../components/About";
 
 export default function Home() {
-	const [POMODORO, SHORTBREAK, LONGBREAK] = [25, 1, 10];
+	const [POMODORO, SHORTBREAK, LONGBREAK] = [25, 5, 10];
 
 	const [openSetting, setOpenSetting] = useState(false);
 	const [ticking, setTicking] = useState(false);
@@ -17,6 +18,7 @@ export default function Home() {
 	const [seconds, setSeconds] = useState(0);
 	const [stage, setStage] = useState(0);
 	const [consumedSecond, setConsumedSecond] = useState(0);
+
 	const pomodoroRef = useRef();
 	const shortBreakRef = useRef();
 	const longBreakRef = useRef();
@@ -99,11 +101,10 @@ export default function Home() {
 	};
 
 	useEffect(() => {
-		if (consumedSecond) {
-			window.onbeforeunload = () => {
-				return "show warning";
-			};
-		}
+		window.onbeforeunload = () => {
+			return consumedSecond ? "Show warning" : null;
+		};
+
 		const timer = setInterval(() => {
 			if (ticking) {
 				setConsumedSecond((value) => value + 1);
@@ -119,31 +120,35 @@ export default function Home() {
 	}, [poromodo, shortBreak, longBreak, ticking, seconds]);
 
 	return (
-		<div className="min-h-screen  bg-blue-500 font-inter">
-			<div className="max-w-2xl mx-auto min-h-screen flex flex-col">
-				<Navigation setOpenSetting={setOpenSetting} />
-				<div className="flex-1 mt-10">
-					<Timer
-						switchStage={switchStage}
-						getTickingTime={getTickingTime}
-						stage={stage}
-						ticking={ticking}
-						startTimer={startTimer}
-						seconds={seconds}
-						muteAlarm={muteAlarm}
-						isTimeUp={isTimeUp}
-					/>
+		<>
+			<div className="min-h-screen  bg-gray-900 font-inter">
+				<div className="max-w-2xl mx-auto min-h-screen flex flex-col">
+					<Navigation setOpenSetting={setOpenSetting} />
+					<div className="mt-10">
+						<Timer
+							switchStage={switchStage}
+							getTickingTime={getTickingTime}
+							stage={stage}
+							ticking={ticking}
+							startTimer={startTimer}
+							seconds={seconds}
+							muteAlarm={muteAlarm}
+							isTimeUp={isTimeUp}
+							reset={reset}
+						/>
+					</div>
+					<About />
 				</div>
+				<ModalSetting
+					openSetting={openSetting}
+					setOpenSetting={setOpenSetting}
+					pomodoroRef={pomodoroRef}
+					shortBreakRef={shortBreakRef}
+					longBreakRef={longBreakRef}
+					updateTimeDefaultValue={updateTimeDefaultValue}
+				/>
+				<Alarm ref={alarmRef} />
 			</div>
-			<ModalSetting
-				openSetting={openSetting}
-				setOpenSetting={setOpenSetting}
-				pomodoroRef={pomodoroRef}
-				shortBreakRef={shortBreakRef}
-				longBreakRef={longBreakRef}
-				updateTimeDefaultValue={updateTimeDefaultValue}
-			/>
-			<Alarm ref={alarmRef} />
-		</div>
+		</>
 	);
 }

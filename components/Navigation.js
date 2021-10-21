@@ -2,7 +2,6 @@ import React from "react";
 import { FiSettings, FiAperture } from "react-icons/fi";
 
 function Navigation({ setOpenSetting }) {
-	console.log("I rebuild");
 	return (
 		<>
 			<nav className="pt-5 flex justify-between w-11/12 mx-auto">
